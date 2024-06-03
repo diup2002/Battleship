@@ -23,9 +23,10 @@ pygame.display.set_caption("Battleship_v2")
 font = pygame.font.SysFont("Comic Sans MS", 50)   # police du texte à afficher.
 label_font = pygame.font.SysFont("Arial", 15)
 # Trois fichiers audios chargés pour les effets sonores.
-hit_sound = pygame.mixer.Sound("/Users/leonardocruzyescas/Documents/CETYS/Battleship/battleship_v2_GUI/touche.wav")
-miss_sound = pygame.mixer.Sound("/Users/leonardocruzyescas/Documents/CETYS/Battleship/battleship_v2_GUI/rate.wav")
-end_game_sound = pygame.mixer.Sound("/Users/leonardocruzyescas/Documents/CETYS/Battleship/battleship_v2_GUI/finJeu.wav")
+hit_sound = pygame.mixer.Sound("/Users/Leonardo Cruz/Battleship/battleship_v2_GUI/touche.wav")
+miss_sound = pygame.mixer.Sound("/Users/Leonardo Cruz/Battleship/battleship_v2_GUI/rate.wav")
+end_game_sound = pygame.mixer.Sound("/Users/Leonardo Cruz/Battleship/battleship_v2_GUI/finJeu.wav")
+
 
 # Variables Globales de dimensionnement
 square_size = 35                                # taille en pixels des cases dans la grille
@@ -197,9 +198,9 @@ while animation:
                         miss_sound.play()  # Joue le son d'eau pour le joueur 2
 
                 # tour du 2nd joueur
-                elif not game.player1Turn and (x > WIDTH - square_size*10) and (y > square_size*10 + vertical_margin): # (on verifie que le joueur2 joue son coup dans la case de recherche adverse)
-                    row = (y - square_size*10 - vertical_margin) // square_size
-                    column = (x - square_size*10 - horizontal_margin) // square_size
+                elif not game.player1Turn and (x > WIDTH - square_size*11) and (y > square_size*11 + vertical_margin): # (on verifie que le joueur2 joue son coup dans la case de recherche adverse)
+                    row = (y - square_size*10 - vertical_margin) // square_size - 1
+                    column = (x - square_size*10 - horizontal_margin) // square_size - 1
                     index = row*10 + column
                     game.play_move(index)
                     if not game.player1Turn:

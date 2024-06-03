@@ -13,11 +13,14 @@ import random
 
 
 class Ship:
-    def __init__(self, size, orientation="horizontal"):
+    def __init__(self, size, row=None, column=None, orientation="horizontal"):
+        """ Constructor for the Ship class """
         self.size = size
+        self.row = row
+        self.column = column
         self.orientation = orientation
-        self.row = None
-        self.column = None
+        if row is not None and column is not None:
+            self.indexes = self.generate_index()
 
     def is_sunk(self, searches):
         """Détermine si le bateau a été coulé"""
@@ -40,20 +43,22 @@ class Ship:
 
     def generate_index(self):
         """
-        Génère les index des cases occupées par un bateau en fonction de sa position, taille et orientation.
+        Generates the indexes of the grid cells occupied by the ship based on its position, size, and orientation.
 
         Returns:
-            Liste des index des cases occupées par le bateau.
+            List of indexes of grid cells occupied by the ship.
         """
-
-        # On calcule l'index de départ en convertissant la position (ligne, colonne) en un index unique sur la grille de taille 10x10
-        start_index = self.row * 10 + self.column
-        # Si le bateau est orienté horizontalement, génère les index en ajoutant i à l'index de départ pour chaque i allant de 0 à taille-1
+        if self.row is None or self.column is None:
+            raise ValueError("Row and column must be specified to generate ship indexes.")
+        # Generate indexes based on ship's position, size, and orientation
+        indexes = []
         if self.orientation == "horizontal":
-            return [start_index + i for i in range(self.size)]
-        # Si le bateau est orienté verticalement, génère les index en ajoutant i * 10 à l'index de départ pour chaque i allant de 0 à taille-1
+            for i in range(self.size):
+                indexes.append((self.row * 10) + self.column + i)
         elif self.orientation == "vertical":
-            return [start_index + i * 10 for i in range(self.size)]
+            for i in range(self.size):
+                indexes.append((self.row + i) * 10 + self.column)
+        return indexes
 
 
 class Player:
@@ -179,7 +184,7 @@ class Game:
                         isSunk = False
                         break
                 if isSunk:
-                    for i in ship.indexes and ship.is_sunk(currentPlayer.searches):
+                    for i in ship.indexes:
                         currentPlayer.searches[i] = "S"
         else:
             currentPlayer.searches[i] = "R"
