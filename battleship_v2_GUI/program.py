@@ -13,7 +13,23 @@ import random
 
 
 class Ship:
+    def __init__(self, size, orientation="horizontal"):
+        self.size = size
+        self.orientation = orientation
+        self.row = None
+        self.column = None
 
+    def is_sunk(self, searches):
+        """Détermine si le bateau a été coulé"""
+        for i in range(self.size):
+            if self.orientation == "horizontal":
+                if searches[self.row * 10 + self.column + i] != "H":
+                    return False
+            else:
+                if searches[(self.row + i) * 10 + self.column] != "H":
+                    return False
+        return True
+        
     def __init__(self, size):
         """ Constructeur de classe """
         self.row = random.randrange(0, 9)
@@ -41,6 +57,16 @@ class Ship:
 
 
 class Player:
+    def __init__(self):
+        self.ships = []
+        self.searches = ["U" for _ in range(100)]
+        self.reset_ships()
+
+    def reset_ships(self):
+        """Reset ships for a new game"""
+        self.ships = []
+        self.searches = ["U" for _ in range(100)]
+
 
     def __init__(self):
         """ Constructeur de classe """
@@ -153,7 +179,7 @@ class Game:
                         isSunk = False
                         break
                 if isSunk:
-                    for i in ship.indexes:
+                    for i in ship.indexes and ship.is_sunk(currentPlayer.searches):
                         currentPlayer.searches[i] = "S"
         else:
             currentPlayer.searches[i] = "R"
